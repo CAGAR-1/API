@@ -1,38 +1,43 @@
 // To parse this JSON data, do
 //
-//     final api = apiFromJson(jsonString);
+//     final fulldetails = fulldetailsFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Api> apiFromJson(String str) => List<Api>.from(json.decode(str).map((x) => Api.fromJson(x)));
+List<Fulldetails> fulldetailsFromJson(String str) => List<Fulldetails>.from(
+    json.decode(str).map((x) => Fulldetails.fromJson(x)));
 
-String apiToJson(List<Api> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String fulldetailsToJson(List<Fulldetails> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Api {
-    Api({
-        required this.userId,
-       required this.id,
-       required this.title,
-        required this.body,
-    });
+class Fulldetails {
+  Fulldetails({
+    required this.albumId,
+    required this.id,
+    required this.title,
+    required this.url,
+    required this.thumbnailUrl,
+  });
 
-    int userId;
-    int id;
-    String title;
-    String body;
+  int albumId;
+  int id;
+  String title;
+  String url;
+  String thumbnailUrl;
 
-    factory Api.fromJson(Map<String, dynamic> json) => Api(
-        userId: json["userId"],
+  factory Fulldetails.fromJson(Map<String, dynamic> json) => Fulldetails(
+        albumId: json["albumId"],
         id: json["id"],
         title: json["title"],
-        body: json["body"],
-    );
+        url: json["url"],
+        thumbnailUrl: json["thumbnailUrl"],
+      );
 
-    Map<String, dynamic> toJson() => {
-        "userId": userId,
+  Map<String, dynamic> toJson() => {
+        "albumId": albumId,
         "id": id,
         "title": title,
-        "body": body,
-    };
+        "url": url,
+        "thumbnailUrl": thumbnailUrl,
+      };
 }
-

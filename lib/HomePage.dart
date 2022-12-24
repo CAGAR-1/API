@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:apicall/models/model.dart';
-import 'package:apicall/models/usermodel.dart';
+// import 'package:apicall/models/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -17,7 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Fulldetails> fulldetails = [];
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +38,20 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                GetText(
+                                    index,
+                                    fulldetails[index].url,
+                                    fulldetails[index].title,
+                                    fulldetails[index].thumbnailUrl)
+
                                 // GetText(index, 'ID',
                                 //     fulldetails[index].id.toString()),
 
-                                GetText(
-                                    index,
-                                    fulldetails[index].name,
-                                    fulldetails[index].address.street,
-                                    fulldetails[index].address.geo.lat)
+                                // GetText(
+                                //     index,
+                                //     fulldetails[index].name,
+                                //     fulldetails[index].address.street,
+                                //     fulldetails[index].address.geo.lat)
                               ],
                             ),
                           ),
@@ -67,19 +72,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Column GetText(
-      int index, String fieldname, String content, String ajaiaauta) {
+  Column GetText(int index, String MainUrl, String title, String thumbnailUrl) {
     return Column(
       children: [
-        Text(fieldname),
-        Text(fieldname),
-        Text(content),
-        Text(ajaiaauta)
+        Text(title),
+        Image.network(MainUrl.toString()),
+        Image.network(thumbnailUrl.toString()),
       ],
     );
   }
 
-  final url = "http://jsonplaceholder.typicode.com/users";
+  final url = "http://jsonplaceholder.typicode.com/photos";
   Future<List<Fulldetails>> getData() async {
     final responce = await http.get(Uri.parse(url));
     var data = jsonDecode(responce.body.toString());

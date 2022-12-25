@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:apicall/models/model.dart';
-// import 'package:apicall/models/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:tmdb_api/tmdb_api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,12 +14,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List trendingmovies = [];
+  List topratedmovies = [];
+  List tv = [];
+
+  @override
+  void initState() {
+    loadMovies();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  String apiKey = '31dda82c9c7a3a73884e0c0c598ac8cd';
+  final readaccesstoken =
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMWRkYTgyYzljN2EzYTczODg0ZTBjMGM1OThhYzhjZCIsInN1YiI6IjYzYTg2Yjc2ZTRiNTc2MDA4NWJlYjE1MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lwo0oTG7qsoQ-96r82LaxcTuRYlSZ6_PUIFrMikoPxI';
+
+  loadMovies() async {
+    TMDB tmdbWithCutomLogs = TMDB(ApiKeys(apiKey, readaccesstoken),
+        logConfig: ConfigLogger(showLogs: true, showErrorLogs: true));
+    Map trendingresult = await tmdbWithCutomLogs.v3.trending.getTrending();
+    Map topratedresult = await tmdbWithCutomLogs.v3.movies.getTopRated();
+    Map tvreasult = await tmdbWithCutomLogs.v3.tv.getPopular();
+
+    trendingmovies.add(trendingresult);
+    topratedmovies.add(topratedresult);
+    tv.add(tvreasult);
+    print(tv[0]);
+
+    // print(trendingresult);
+  }
+
   List<Fulldetails> fulldetails = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: getData(),
+        future: loadMovies(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
